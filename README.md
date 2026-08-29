@@ -4,8 +4,6 @@
 
 Clone the repository
 
-`git clone git@github.com:techsoft-code/flutter-template.git`
-
 ## Prerequisite
 
 - Flutter 3.41.6
