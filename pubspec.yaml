@@ -1,0 +1,89 @@
+name: flutter_template
+description: "A new Flutter project."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_localizations:
+    sdk: flutter
+  dartx: ^1.1.0
+  dio: ^5.4.0
+  equatable: ^2.0.5
+  flutter_platform_widgets: ^7.0.1
+  shared_preferences: ^2.2.2
+  flutter_riverpod: ^2.1.1
+  flutter_svg: ^2.0.1
+  freezed_annotation: ^2.2.0
+  get_it: ^8.0.2
+  intl: ^0.20.2
+  go_router: ^14.3.0
+  injectable: ^2.1.0
+  retrofit: ^4.0.3
+  flutter_secure_storage: ^10.0.0-beta.4
+  flutter_portal: ^1.1.4
+  flutter_screenutil: ^5.9.3
+  overlay_support: ^2.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  custom_lint: ^0.7.0
+  riverpod_lint: ^2.3.7
+  build_runner: ^2.4.14
+  flutter_gen_runner: ^5.8.0
+  injectable_generator: ^2.1.2
+  retrofit_generator: ^9.1.4
+  json_serializable: ^6.5.4
+  freezed: ^2.3.2
+  intl_utils: ^2.8.8
+
+flutter:
+  generate: true
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/fonts/
+    - assets/imgs/
+    - assets/svgs/
+  fonts:
+    - family: Neutraface Text
+      fonts:
+        - asset: assets/fonts/Neutraface_Text_Light.otf
+          weight: 300
+        - asset: assets/fonts/Neutraface_Text_Book.otf
+          weight: 400
+        - asset: assets/fonts/Neutraface_Text_Demi.otf
+          weight: 600
+        - asset: assets/fonts/Neutraface_Text_Bold.otf
+          weight: 700
+        - asset: assets/fonts/Neutraface_Text_Light_Italic.otf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/Neutraface_Text_Book_Italic.otf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/Neutraface_Text_Demi_Italic.otf
+          weight: 600
+          style: italic
+        - asset: assets/fonts/Neutraface_Text_Bold_Italic.otf
+          weight: 700
+          style: italic
+
+flutter_intl:
+  enabled: true
+  class_name: AppLocalizations
+
+flutter_gen:
+  integrations:
+    flutter_svg: true
+  colors:
+    enabled: true
+    inputs:
+      - assets/color/colors.xml
