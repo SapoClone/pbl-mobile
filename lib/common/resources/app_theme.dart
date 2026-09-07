@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../gen/fonts.gen.dart';
 import 'dimens.dart';
 import '../../gen/colors.gen.dart';
 
 class AppTheme {
   AppTheme._();
+
+  static const fontFamily = 'Roboto';
 
   static CupertinoThemeData get cupertinoTheme => CupertinoThemeData(
         primaryColor: ColorName.purpleRhythm,
@@ -14,7 +15,7 @@ class AppTheme {
         scaffoldBackgroundColor: ColorName.purpleCyberGrape,
         textTheme: CupertinoTextThemeData(
           textStyle: TextStyle(
-            fontFamily: FontFamily.neutrafaceText,
+            fontFamily: fontFamily,
             color: Colors.white,
             fontSize: Dimens.fontSize12,
             fontWeight: FontWeight.w400,
@@ -22,7 +23,7 @@ class AppTheme {
             height: 1.4,
           ),
           actionTextStyle: TextStyle(
-            fontFamily: FontFamily.neutrafaceText,
+            fontFamily: fontFamily,
             color: Colors.white,
             fontSize: Dimens.fontSize14,
             fontWeight: FontWeight.w700,
@@ -33,7 +34,7 @@ class AppTheme {
       );
 
   static ThemeData get lightTheme => ThemeData(
-        fontFamily: FontFamily.neutrafaceText,
+        fontFamily: fontFamily,
         primaryColor: ColorName.purpleRhythm,
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: ColorName.purpleRhythm,
