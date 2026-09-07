@@ -6,7 +6,7 @@ Clone the repository
 
 ## Prerequisite
 
-- Flutter 3.41.6
+- Flutter 3.41.7 (Dart 3.11.5)
 - Flutter version manager (recommend): [fvm](https://fvm.app/)
 
 ## Getting Started

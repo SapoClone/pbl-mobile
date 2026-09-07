@@ -4,7 +4,8 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.6.1
+  sdk: ">=3.11.5 <4.0.0"
+  flutter: ">=3.41.7"
 
 dependencies:
   flutter:
@@ -24,6 +25,7 @@ dependencies:
   intl: ^0.20.2
   go_router: ^14.3.0
   injectable: ^2.1.0
+  json_annotation: ^4.9.0
   retrofit: ^4.0.3
   flutter_secure_storage: ^10.0.0-beta.4
   flutter_portal: ^1.1.4
