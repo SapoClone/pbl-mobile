@@ -79,7 +79,7 @@ class _SignUpView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               SizedBox(height: topSpacing),
-                              _RetailProLogo(size: logoSize),
+                              _SapoCloneLogo(size: logoSize),
                               SizedBox(height: sectionSpacing),
                               const Text(
                                 'Đăng ký',
@@ -92,7 +92,7 @@ class _SignUpView extends StatelessWidget {
                               ),
                               const SizedBox(height: 8),
                               const Text(
-                                'Tạo tài khoản RetailPro của bạn',
+                                'Tạo tài khoản SapoClone của bạn',
                                 style: TextStyle(
                                   fontFamily: _fontFamily,
                                   color: _textSecondary,
@@ -308,8 +308,8 @@ class _SignUpView extends StatelessWidget {
   }
 }
 
-class _RetailProLogo extends StatelessWidget {
-  const _RetailProLogo({required this.size});
+class _SapoCloneLogo extends StatelessWidget {
+  const _SapoCloneLogo({required this.size});
 
   final double size;
 
@@ -351,7 +351,7 @@ class _RetailProLogo extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         const Text(
-          'RetailPro',
+          'SapoClone',
           style: TextStyle(
             fontFamily: _fontFamily,
             color: _brandBlue,
