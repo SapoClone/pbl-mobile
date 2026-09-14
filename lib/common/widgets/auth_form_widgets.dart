@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../resources/app_theme.dart';
+
 const authBrandBlue = Color(0xFF1769E8);
 const authBrandBlueDark = Color(0xFF0758D1);
 const authTextPrimary = Color(0xFF17233C);
 const authTextSecondary = Color(0xFF8C96A8);
 const authFieldBorder = Color(0xFFDDE3EC);
-const authFontFamily = 'Roboto';
+const authFontFamily = AppTheme.fontFamily;
 
 class AuthFormScaffold extends StatelessWidget {
   const AuthFormScaffold({
@@ -29,10 +31,14 @@ class AuthFormScaffold extends StatelessWidget {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final horizontalPadding =
-                (constraints.maxWidth * 0.055).clamp(18.0, 26.0);
-            final formSpacing =
-                (constraints.maxHeight * 0.045).clamp(28.0, 42.0);
+            final horizontalPadding = (constraints.maxWidth * 0.055).clamp(
+              18.0,
+              26.0,
+            );
+            final formSpacing = (constraints.maxHeight * 0.045).clamp(
+              28.0,
+              42.0,
+            );
 
             return Stack(
               children: [
@@ -48,8 +54,10 @@ class AuthFormScaffold extends StatelessWidget {
                     ),
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
-                        minHeight: (constraints.maxHeight - 80)
-                            .clamp(0.0, double.infinity),
+                        minHeight: (constraints.maxHeight - 80).clamp(
+                          0.0,
+                          double.infinity,
+                        ),
                       ),
                       child: Align(
                         alignment: const Alignment(0, -0.16),
@@ -92,7 +100,7 @@ class AuthFormScaffold extends StatelessWidget {
                   top: 0,
                   child: IconButton(
                     onPressed: onBack,
-                    tooltip: 'Quay lại',
+                    tooltip: 'Back',
                     visualDensity: VisualDensity.compact,
                     style: IconButton.styleFrom(
                       minimumSize: const Size.square(40),

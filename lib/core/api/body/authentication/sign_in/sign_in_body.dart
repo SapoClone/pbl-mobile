@@ -2,15 +2,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'sign_in_body.g.dart';
 
-@JsonSerializable(
-  checked: true,
-  createFactory: false,
-)
+@JsonSerializable(checked: true, createFactory: false)
 class SignInBody {
-  SignInBody({
-    required this.email,
-    required this.password,
-  });
+  const SignInBody({required this.email, required this.password});
 
   final String email;
   final String password;

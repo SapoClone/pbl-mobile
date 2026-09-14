@@ -1,9 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/api/body/authentication/sign_in/sign_in_body.dart';
+import '../../../core/data/base/result.dart';
+import '../data/repository/authentication_repository.dart';
 import 'sign_in_state.dart';
 
 class SignInCubit extends Cubit<SignInState> {
-  SignInCubit() : super(const SignInState());
+  SignInCubit({required AuthenticationRepository authenticationRepository})
+    : _authenticationRepository = authenticationRepository,
+      super(const SignInState());
+
+  final AuthenticationRepository _authenticationRepository;
 
   void emailChanged(String value) {
     emit(
@@ -38,7 +45,7 @@ class SignInCubit extends Cubit<SignInState> {
       emit(
         state.copyWith(
           status: SignInStatus.failure,
-          errorMessage: 'Vui lòng nhập email hợp lệ và mật khẩu từ 6 ký tự.',
+          errorMessage: 'Enter a valid email and a password of 6+ characters.',
         ),
       );
       return;
@@ -46,8 +53,20 @@ class SignInCubit extends Cubit<SignInState> {
 
     emit(state.copyWith(status: SignInStatus.submitting, clearError: true));
 
-    // TODO: Thay phần mô phỏng này bằng AuthenticationRepository.
-    await Future<void>.delayed(const Duration(milliseconds: 700));
-    emit(state.copyWith(status: SignInStatus.success));
+    final result = await _authenticationRepository.signIn(
+      body: SignInBody(email: state.email.trim(), password: state.password),
+    );
+
+    switch (result) {
+      case Success():
+        emit(state.copyWith(status: SignInStatus.success));
+      case Failed():
+        emit(
+          state.copyWith(
+            status: SignInStatus.failure,
+            errorMessage: 'Incorrect email or password.',
+          ),
+        );
+    }
   }
 }

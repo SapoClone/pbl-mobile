@@ -56,31 +56,9 @@ flutter:
     - assets/imgs/
     - assets/svgs/
   fonts:
-    - family: Roboto
+    - family: Inter
       fonts:
-        - asset: assets/fonts/Roboto-Variable.ttf
-    - family: Neutraface Text
-      fonts:
-        - asset: assets/fonts/Neutraface_Text_Light.otf
-          weight: 300
-        - asset: assets/fonts/Neutraface_Text_Book.otf
-          weight: 400
-        - asset: assets/fonts/Neutraface_Text_Demi.otf
-          weight: 600
-        - asset: assets/fonts/Neutraface_Text_Bold.otf
-          weight: 700
-        - asset: assets/fonts/Neutraface_Text_Light_Italic.otf
-          weight: 300
-          style: italic
-        - asset: assets/fonts/Neutraface_Text_Book_Italic.otf
-          weight: 400
-          style: italic
-        - asset: assets/fonts/Neutraface_Text_Demi_Italic.otf
-          weight: 600
-          style: italic
-        - asset: assets/fonts/Neutraface_Text_Bold_Italic.otf
-          weight: 700
-          style: italic
+        - asset: assets/fonts/Inter-Variable.ttf
 
 flutter_intl:
   enabled: true

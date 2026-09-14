@@ -9,13 +9,7 @@ import 'my_app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FlavorConfig(appFlavor: Flavor.development);
-  AppConfiguration.ensureAppConfiguration();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
-    (value) => runApp(
-      ProviderScope(
-        observers: [RiverpodLogger()],
-        child: const MyApp(),
-      ),
-    ),
-  );
+  await AppConfiguration.ensureAppConfiguration();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  runApp(ProviderScope(observers: [RiverpodLogger()], child: const MyApp()));
 }
