@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../common/resources/app_theme.dart';
+import '../../../core/di/di.dart';
 import '../../../navigation/route_const.dart';
+import '../data/repository/authentication_repository.dart';
 import 'sign_up_cubit.dart';
 import 'sign_up_state.dart';
 
@@ -11,7 +14,7 @@ const _brandBlueDark = Color(0xFF0758D1);
 const _textPrimary = Color(0xFF17233C);
 const _textSecondary = Color(0xFF8C96A8);
 const _fieldBorder = Color(0xFFDDE3EC);
-const _fontFamily = 'Roboto';
+const _fontFamily = AppTheme.fontFamily;
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -19,7 +22,9 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SignUpCubit(),
+      create: (_) => SignUpCubit(
+        authenticationRepository: getIt<AuthenticationRepository>(),
+      ),
       child: const _SignUpView(),
     );
   }
@@ -35,7 +40,7 @@ class _SignUpView extends StatelessWidget {
       listener: (context, state) {
         if (state.status == SignUpStatus.success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Tạo tài khoản thành công!')),
+            const SnackBar(content: Text('Account created successfully!')),
           );
           context.goNamed(AppRouteName.signIn);
         }
@@ -46,15 +51,23 @@ class _SignUpView extends StatelessWidget {
         body: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final horizontalPadding =
-                  (constraints.maxWidth * 0.07).clamp(20.0, 32.0);
-              final topSpacing =
-                  (constraints.maxHeight * 0.055).clamp(28.0, 58.0);
-              final sectionSpacing =
-                  (constraints.maxHeight * 0.03).clamp(20.0, 30.0);
+              final horizontalPadding = (constraints.maxWidth * 0.07).clamp(
+                20.0,
+                32.0,
+              );
+              final topSpacing = (constraints.maxHeight * 0.055).clamp(
+                28.0,
+                58.0,
+              );
+              final sectionSpacing = (constraints.maxHeight * 0.03).clamp(
+                20.0,
+                30.0,
+              );
               final logoSize = (constraints.maxWidth * 0.18).clamp(64.0, 78.0);
-              final fieldHeight =
-                  (constraints.maxWidth * 0.145).clamp(54.0, 62.0);
+              final fieldHeight = (constraints.maxWidth * 0.145).clamp(
+                54.0,
+                62.0,
+              );
               return SingleChildScrollView(
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
@@ -82,7 +95,7 @@ class _SignUpView extends StatelessWidget {
                               _SapoCloneLogo(size: logoSize),
                               SizedBox(height: sectionSpacing),
                               const Text(
-                                'Đăng ký',
+                                'Sign up',
                                 style: TextStyle(
                                   fontFamily: _fontFamily,
                                   color: _textPrimary,
@@ -92,7 +105,7 @@ class _SignUpView extends StatelessWidget {
                               ),
                               const SizedBox(height: 8),
                               const Text(
-                                'Tạo tài khoản SapoClone của bạn',
+                                'Create your SapoClone account',
                                 style: TextStyle(
                                   fontFamily: _fontFamily,
                                   color: _textSecondary,
@@ -113,7 +126,7 @@ class _SignUpView extends StatelessWidget {
                                   autofillHints: const [AutofillHints.name],
                                   onChanged: cubit.fullNameChanged,
                                   decoration: _inputDecoration(
-                                    hint: 'Họ và tên',
+                                    hint: 'Full name',
                                     icon: Icons.person_outline,
                                   ),
                                 ),
@@ -152,21 +165,23 @@ class _SignUpView extends StatelessWidget {
                                     AutofillHints.newPassword,
                                   ],
                                   onChanged: cubit.passwordChanged,
-                                  decoration: _inputDecoration(
-                                    hint: 'Mật khẩu',
-                                    icon: Icons.lock_outline,
-                                  ).copyWith(
-                                    suffixIcon: IconButton(
-                                      onPressed: cubit.togglePasswordVisibility,
-                                      icon: Icon(
-                                        state.obscurePassword
-                                            ? Icons.visibility_outlined
-                                            : Icons.visibility_off_outlined,
-                                        size: 22,
-                                        color: _textSecondary,
+                                  decoration:
+                                      _inputDecoration(
+                                        hint: 'Password',
+                                        icon: Icons.lock_outline,
+                                      ).copyWith(
+                                        suffixIcon: IconButton(
+                                          onPressed:
+                                              cubit.togglePasswordVisibility,
+                                          icon: Icon(
+                                            state.obscurePassword
+                                                ? Icons.visibility_outlined
+                                                : Icons.visibility_off_outlined,
+                                            size: 22,
+                                            color: _textSecondary,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
                                 ),
                               ),
                               const SizedBox(height: 14),
@@ -182,22 +197,23 @@ class _SignUpView extends StatelessWidget {
                                   textInputAction: TextInputAction.done,
                                   onChanged: cubit.confirmPasswordChanged,
                                   onSubmitted: (_) => cubit.submit(),
-                                  decoration: _inputDecoration(
-                                    hint: 'Xác nhận mật khẩu',
-                                    icon: Icons.lock_reset_outlined,
-                                  ).copyWith(
-                                    suffixIcon: IconButton(
-                                      onPressed:
-                                          cubit.toggleConfirmPasswordVisibility,
-                                      icon: Icon(
-                                        state.obscureConfirmPassword
-                                            ? Icons.visibility_outlined
-                                            : Icons.visibility_off_outlined,
-                                        size: 22,
-                                        color: _textSecondary,
+                                  decoration:
+                                      _inputDecoration(
+                                        hint: 'Confirm password',
+                                        icon: Icons.lock_reset_outlined,
+                                      ).copyWith(
+                                        suffixIcon: IconButton(
+                                          onPressed: cubit
+                                              .toggleConfirmPasswordVisibility,
+                                          icon: Icon(
+                                            state.obscureConfirmPassword
+                                                ? Icons.visibility_outlined
+                                                : Icons.visibility_off_outlined,
+                                            size: 22,
+                                            color: _textSecondary,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
                                 ),
                               ),
                               const SizedBox(height: 14),
@@ -225,10 +241,10 @@ class _SignUpView extends StatelessWidget {
                                   const Expanded(
                                     child: Text.rich(
                                       TextSpan(
-                                        text: 'Tôi đồng ý với ',
+                                        text: 'I agree to the ',
                                         children: [
                                           TextSpan(
-                                            text: 'Điều khoản sử dụng',
+                                            text: 'Terms of Service',
                                             style: TextStyle(
                                               fontFamily: _fontFamily,
                                               color: _brandBlue,
@@ -260,7 +276,7 @@ class _SignUpView extends StatelessWidget {
                               ],
                               const SizedBox(height: 22),
                               _GradientButton(
-                                label: 'Đăng ký',
+                                label: 'Sign up',
                                 isLoading:
                                     state.status == SignUpStatus.submitting,
                                 onPressed: cubit.submit,
@@ -271,7 +287,7 @@ class _SignUpView extends StatelessWidget {
                                 crossAxisAlignment: WrapCrossAlignment.center,
                                 children: [
                                   const Text(
-                                    'Đã có tài khoản?',
+                                    'Already have an account?',
                                     style: TextStyle(
                                       fontFamily: _fontFamily,
                                       color: _textSecondary,
@@ -282,7 +298,7 @@ class _SignUpView extends StatelessWidget {
                                     onPressed: () =>
                                         context.goNamed(AppRouteName.signIn),
                                     child: const Text(
-                                      'Đăng nhập',
+                                      'Sign in',
                                       style: TextStyle(
                                         fontFamily: _fontFamily,
                                         color: _brandBlue,

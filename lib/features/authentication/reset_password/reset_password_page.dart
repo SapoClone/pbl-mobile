@@ -8,10 +8,7 @@ import 'reset_password_cubit.dart';
 import 'reset_password_state.dart';
 
 class ResetPasswordPage extends StatelessWidget {
-  const ResetPasswordPage({
-    required this.email,
-    super.key,
-  });
+  const ResetPasswordPage({required this.email, super.key});
 
   final String email;
 
@@ -34,7 +31,7 @@ class _ResetPasswordView extends StatelessWidget {
       listener: (context, state) {
         if (state.status == ResetPasswordStatus.success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Đặt lại mật khẩu thành công!')),
+            const SnackBar(content: Text('Password reset successfully!')),
           );
           context.goNamed(AppRouteName.signIn);
         }
@@ -43,8 +40,8 @@ class _ResetPasswordView extends StatelessWidget {
         builder: (context, state) {
           final cubit = context.read<ResetPasswordCubit>();
           return AuthFormScaffold(
-            title: 'Đặt lại mật khẩu',
-            description: 'Vui lòng nhập mật khẩu mới của bạn.',
+            title: 'Reset password',
+            description: 'Enter your new password.',
             onBack: () {
               if (context.canPop()) {
                 context.pop();
@@ -54,14 +51,15 @@ class _ResetPasswordView extends StatelessWidget {
             },
             children: [
               AuthTextField(
-                hintText: 'Mật khẩu mới',
+                hintText: 'New password',
                 prefixIcon: Icons.lock_outline,
                 obscureText: state.obscurePassword,
                 textInputAction: TextInputAction.next,
                 onChanged: cubit.passwordChanged,
                 suffixIcon: IconButton(
-                  tooltip:
-                      state.obscurePassword ? 'Hiện mật khẩu' : 'Ẩn mật khẩu',
+                  tooltip: state.obscurePassword
+                      ? 'Show password'
+                      : 'Hide password',
                   onPressed: cubit.togglePasswordVisibility,
                   icon: Icon(
                     state.obscurePassword
@@ -74,7 +72,7 @@ class _ResetPasswordView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               AuthTextField(
-                hintText: 'Xác nhận mật khẩu mới',
+                hintText: 'Confirm new password',
                 prefixIcon: Icons.lock_reset_outlined,
                 obscureText: state.obscureConfirmPassword,
                 textInputAction: TextInputAction.done,
@@ -82,8 +80,8 @@ class _ResetPasswordView extends StatelessWidget {
                 onSubmitted: (_) => cubit.submit(),
                 suffixIcon: IconButton(
                   tooltip: state.obscureConfirmPassword
-                      ? 'Hiện mật khẩu'
-                      : 'Ẩn mật khẩu',
+                      ? 'Show password'
+                      : 'Hide password',
                   onPressed: cubit.toggleConfirmPasswordVisibility,
                   icon: Icon(
                     state.obscureConfirmPassword
@@ -100,7 +98,7 @@ class _ResetPasswordView extends StatelessWidget {
               ],
               const SizedBox(height: 24),
               AuthPrimaryButton(
-                label: 'Đặt lại mật khẩu',
+                label: 'Reset password',
                 isLoading: state.status == ResetPasswordStatus.submitting,
                 onPressed: cubit.submit,
               ),

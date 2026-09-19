@@ -38,9 +38,9 @@ class _ForgotPasswordView extends StatelessWidget {
         builder: (context, state) {
           final cubit = context.read<ForgotPasswordCubit>();
           return AuthFormScaffold(
-            title: 'Quên mật khẩu',
+            title: 'Forgot password',
             description:
-                'Nhập email của bạn để nhận hướng dẫn đặt lại mật khẩu.',
+                'Enter your email to receive password reset instructions.',
             onBack: () {
               if (context.canPop()) {
                 context.pop();
@@ -63,7 +63,7 @@ class _ForgotPasswordView extends StatelessWidget {
               ],
               const SizedBox(height: 24),
               AuthPrimaryButton(
-                label: 'Gửi yêu cầu',
+                label: 'Send request',
                 isLoading: state.status == ForgotPasswordStatus.submitting,
                 onPressed: cubit.submit,
               ),

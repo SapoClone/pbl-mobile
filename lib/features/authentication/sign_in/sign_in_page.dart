@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../common/resources/app_theme.dart';
+import '../../../core/di/di.dart';
 import '../../../navigation/route_const.dart';
+import '../data/repository/authentication_repository.dart';
 import 'sign_in_cubit.dart';
 import 'sign_in_state.dart';
 
@@ -11,7 +14,7 @@ const _brandBlueDark = Color(0xFF0758D1);
 const _textPrimary = Color(0xFF17233C);
 const _textSecondary = Color(0xFF8C96A8);
 const _fieldBorder = Color(0xFFDDE3EC);
-const _fontFamily = 'Roboto';
+const _fontFamily = AppTheme.fontFamily;
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -19,7 +22,9 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SignInCubit(),
+      create: (_) => SignInCubit(
+        authenticationRepository: getIt<AuthenticationRepository>(),
+      ),
       child: const _SignInView(),
     );
   }
@@ -34,9 +39,7 @@ class _SignInView extends StatelessWidget {
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
         if (state.status == SignInStatus.success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Đăng nhập thành công!')),
-          );
+          context.goNamed(AppRouteName.home);
         }
       },
       child: Scaffold(
@@ -45,15 +48,23 @@ class _SignInView extends StatelessWidget {
         body: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final horizontalPadding =
-                  (constraints.maxWidth * 0.07).clamp(20.0, 32.0);
-              final topSpacing =
-                  (constraints.maxHeight * 0.13).clamp(64.0, 112.0);
-              final sectionSpacing =
-                  (constraints.maxHeight * 0.045).clamp(28.0, 42.0);
+              final horizontalPadding = (constraints.maxWidth * 0.07).clamp(
+                20.0,
+                32.0,
+              );
+              final topSpacing = (constraints.maxHeight * 0.13).clamp(
+                64.0,
+                112.0,
+              );
+              final sectionSpacing = (constraints.maxHeight * 0.045).clamp(
+                28.0,
+                42.0,
+              );
               final logoSize = (constraints.maxWidth * 0.18).clamp(64.0, 78.0);
-              final fieldHeight =
-                  (constraints.maxWidth * 0.145).clamp(54.0, 62.0);
+              final fieldHeight = (constraints.maxWidth * 0.145).clamp(
+                54.0,
+                62.0,
+              );
               return SingleChildScrollView(
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
@@ -81,7 +92,7 @@ class _SignInView extends StatelessWidget {
                               _SapoCloneLogo(size: logoSize),
                               SizedBox(height: sectionSpacing),
                               const Text(
-                                'Đăng nhập',
+                                'Sign in',
                                 style: TextStyle(
                                   fontFamily: _fontFamily,
                                   color: _textPrimary,
@@ -91,7 +102,7 @@ class _SignInView extends StatelessWidget {
                               ),
                               const SizedBox(height: 8),
                               const Text(
-                                'Chào mừng bạn trở lại',
+                                'Welcome back',
                                 style: TextStyle(
                                   fontFamily: _fontFamily,
                                   color: _textSecondary,
@@ -112,7 +123,7 @@ class _SignInView extends StatelessWidget {
                                   autofillHints: const [AutofillHints.email],
                                   onChanged: cubit.emailChanged,
                                   decoration: _inputDecoration(
-                                    hint: 'Email hoặc số điện thoại',
+                                    hint: 'Email or phone number',
                                     icon: Icons.email_outlined,
                                   ),
                                 ),
@@ -131,24 +142,26 @@ class _SignInView extends StatelessWidget {
                                   autofillHints: const [AutofillHints.password],
                                   onChanged: cubit.passwordChanged,
                                   onSubmitted: (_) => cubit.submit(),
-                                  decoration: _inputDecoration(
-                                    hint: 'Mật khẩu',
-                                    icon: Icons.lock_outline,
-                                  ).copyWith(
-                                    suffixIcon: IconButton(
-                                      tooltip: state.obscurePassword
-                                          ? 'Hiện mật khẩu'
-                                          : 'Ẩn mật khẩu',
-                                      onPressed: cubit.togglePasswordVisibility,
-                                      icon: Icon(
-                                        state.obscurePassword
-                                            ? Icons.visibility_outlined
-                                            : Icons.visibility_off_outlined,
-                                        size: 22,
-                                        color: _textSecondary,
+                                  decoration:
+                                      _inputDecoration(
+                                        hint: 'Password',
+                                        icon: Icons.lock_outline,
+                                      ).copyWith(
+                                        suffixIcon: IconButton(
+                                          tooltip: state.obscurePassword
+                                              ? 'Show password'
+                                              : 'Hide password',
+                                          onPressed:
+                                              cubit.togglePasswordVisibility,
+                                          icon: Icon(
+                                            state.obscurePassword
+                                                ? Icons.visibility_outlined
+                                                : Icons.visibility_off_outlined,
+                                            size: 22,
+                                            color: _textSecondary,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
                                 ),
                               ),
                               const SizedBox(height: 12),
@@ -172,7 +185,7 @@ class _SignInView extends StatelessWidget {
                               ],
                               const SizedBox(height: 24),
                               _GradientButton(
-                                label: 'Đăng nhập',
+                                label: 'Sign in',
                                 isLoading:
                                     state.status == SignInStatus.submitting,
                                 onPressed: cubit.submit,
@@ -183,7 +196,7 @@ class _SignInView extends StatelessWidget {
                                 crossAxisAlignment: WrapCrossAlignment.center,
                                 children: [
                                   const Text(
-                                    'Chưa có tài khoản?',
+                                    "Don't have an account?",
                                     style: TextStyle(
                                       fontFamily: _fontFamily,
                                       color: _textSecondary,
@@ -194,7 +207,7 @@ class _SignInView extends StatelessWidget {
                                     onPressed: () =>
                                         context.goNamed(AppRouteName.signUp),
                                     child: const Text(
-                                      'Đăng ký',
+                                      'Sign up',
                                       style: TextStyle(
                                         fontFamily: _fontFamily,
                                         color: _brandBlue,
@@ -307,7 +320,7 @@ class _SignInOptions extends StatelessWidget {
         const SizedBox(width: 9),
         const Expanded(
           child: Text(
-            'Ghi nhớ đăng nhập',
+            'Remember me',
             maxLines: 2,
             style: TextStyle(
               fontFamily: _fontFamily,
@@ -325,7 +338,7 @@ class _SignInOptions extends StatelessWidget {
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           child: const Text(
-            'Quên mật khẩu?',
+            'Forgot password?',
             textAlign: TextAlign.right,
             style: TextStyle(
               fontFamily: _fontFamily,

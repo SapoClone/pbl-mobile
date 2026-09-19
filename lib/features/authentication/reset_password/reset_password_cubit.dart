@@ -32,11 +32,7 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
   }
 
   void toggleConfirmPasswordVisibility() {
-    emit(
-      state.copyWith(
-        obscureConfirmPassword: !state.obscureConfirmPassword,
-      ),
-    );
+    emit(state.copyWith(obscureConfirmPassword: !state.obscureConfirmPassword));
   }
 
   Future<void> submit() async {
@@ -54,23 +50,20 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
     }
 
     emit(
-      state.copyWith(
-        status: ResetPasswordStatus.submitting,
-        clearError: true,
-      ),
+      state.copyWith(status: ResetPasswordStatus.submitting, clearError: true),
     );
 
-    // TODO: Gọi API đặt lại mật khẩu với email và mã xác thực.
+    // TODO: Call the password reset API with the email and verification code.
     await Future<void>.delayed(const Duration(milliseconds: 700));
     emit(state.copyWith(status: ResetPasswordStatus.success));
   }
 
   String? _validationMessage() {
     if (state.password.length < 6) {
-      return 'Mật khẩu phải có ít nhất 6 ký tự.';
+      return 'Password must contain at least 6 characters.';
     }
     if (state.password != state.confirmPassword) {
-      return 'Mật khẩu xác nhận không khớp.';
+      return 'Password confirmation does not match.';
     }
     return null;
   }
