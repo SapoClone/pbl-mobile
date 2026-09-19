@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../common/resources/app_theme.dart';
 import '../../navigation/route_const.dart';
+import 'order_filter/order_filter_state.dart';
 import 'order_management_cubit.dart';
 import 'order_management_state.dart';
 
@@ -123,9 +124,22 @@ class _OrdersHeader extends StatelessWidget {
           ),
           const Spacer(),
           IconButton(
-            tooltip: 'Sync orders',
-            onPressed: context.read<OrderManagementCubit>().loadOrders,
-            icon: const Icon(Icons.sync_rounded, color: _textPrimary, size: 23),
+            tooltip: 'Filter orders',
+            onPressed: () async {
+              final filter = await context.pushNamed<OrderFilterState>(
+                AppRouteName.orderFilter,
+              );
+              if (context.mounted && filter != null) {
+                context.read<OrderManagementCubit>().filterChanged(
+                  filter.status,
+                );
+              }
+            },
+            icon: const Icon(
+              Icons.filter_alt_outlined,
+              color: _textPrimary,
+              size: 23,
+            ),
           ),
         ],
       ),
@@ -285,93 +299,101 @@ class _OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = _statusStyle(order.status);
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(11),
-        border: Border.all(color: _border),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 38,
-            height: 38,
-            decoration: BoxDecoration(
-              color: _channelColor(order.channel).withValues(alpha: 0.12),
-              shape: BoxShape.circle,
+    return InkWell(
+      onTap: () =>
+          context.pushNamed(AppRouteName.orderDetail, extra: order.code),
+      borderRadius: BorderRadius.circular(11),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(11),
+          border: Border.all(color: _border),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 38,
+              height: 38,
+              decoration: BoxDecoration(
+                color: _channelColor(order.channel).withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                _channelIcon(order.channel),
+                color: _channelColor(order.channel),
+                size: 20,
+              ),
             ),
-            child: Icon(
-              _channelIcon(order.channel),
-              color: _channelColor(order.channel),
-              size: 20,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    order.code,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontFamily: _fontFamily,
+                      color: _textPrimary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      fontFeatures: _tabularFigures,
+                      letterSpacing: 0,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    order.channel,
+                    style: const TextStyle(
+                      fontFamily: _fontFamily,
+                      color: _textSecondary,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            const SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  order.code,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  '${_formatCurrency(order.amount)} VND',
                   style: const TextStyle(
                     fontFamily: _fontFamily,
                     color: _textPrimary,
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: FontWeight.w700,
                     fontFeatures: _tabularFigures,
                     letterSpacing: 0,
                   ),
                 ),
-                const SizedBox(height: 5),
-                Text(
-                  order.channel,
-                  style: const TextStyle(
-                    fontFamily: _fontFamily,
-                    color: _textSecondary,
-                    fontSize: 12,
+                const SizedBox(height: 6),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 9,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    color: style.color.withValues(alpha: 0.11),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    style.label,
+                    style: TextStyle(
+                      fontFamily: _fontFamily,
+                      color: style.color,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
-          const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                '${_formatCurrency(order.amount)} VND',
-                style: const TextStyle(
-                  fontFamily: _fontFamily,
-                  color: _textPrimary,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  fontFeatures: _tabularFigures,
-                  letterSpacing: 0,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-                decoration: BoxDecoration(
-                  color: style.color.withValues(alpha: 0.11),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  style.label,
-                  style: TextStyle(
-                    fontFamily: _fontFamily,
-                    color: style.color,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

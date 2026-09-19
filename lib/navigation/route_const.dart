@@ -5,6 +5,8 @@ abstract class AppRouteName {
   static const resetPassword = 'reset-password';
   static const home = 'home';
   static const orderManagement = 'order-management';
+  static const orderFilter = 'order-filter';
+  static const orderDetail = 'order-detail';
 }
 
 abstract class AppRoutePath {
@@ -14,4 +16,6 @@ abstract class AppRoutePath {
   static const resetPassword = '/reset-password';
   static const home = '/home';
   static const orderManagement = '/orders';
+  static const orderFilter = '/orders/filter';
+  static const orderDetail = '/orders/detail';
 }
